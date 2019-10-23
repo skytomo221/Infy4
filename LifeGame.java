@@ -1,9 +1,15 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 public class LifeGame {
     public TreeSet<Coordinate> set;
+    protected int generation = 1;
+
+    public int GetGeneration() {
+        return generation;
+    }
 
     public LifeGame() {
         this.set = new TreeSet<Coordinate>();
@@ -51,6 +57,7 @@ public class LifeGame {
             }
         }
         set = newset;
+        generation++;
     }
 
     @Override
