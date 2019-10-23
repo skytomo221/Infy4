@@ -14,29 +14,13 @@ public class LifeGame {
 
     private int countAround(Coordinate c) {
         int cnt = 0;
-        if (set.contains(new Coordinate(c.x - 1, c.y - 1))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x - 1, c.y))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x - 1, c.y + 1))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x, c.y - 1))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x, c.y + 1))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x + 1, c.y - 1))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x + 1, c.y))) {
-            cnt++;
-        }
-        if (set.contains(new Coordinate(c.x + 1, c.y + 1))) {
-            cnt++;
+        List<Coordinate> neighbor = Arrays.asList(new Coordinate(c.x - 1, c.y - 1), new Coordinate(c.x - 1, c.y),
+                new Coordinate(c.x - 1, c.y + 1), new Coordinate(c.x, c.y - 1), new Coordinate(c.x, c.y + 1),
+                new Coordinate(c.x + 1, c.y - 1), new Coordinate(c.x + 1, c.y), new Coordinate(c.x + 1, c.y + 1));
+        for (Coordinate new_c : neighbor) {
+            if (set.contains(new_c)) {
+                cnt++;
+            }
         }
         return cnt;
     }
@@ -49,43 +33,18 @@ public class LifeGame {
                 newset.add(c);
             }
         }
-        TreeSet<Coordinate> maybeNewSet = new TreeSet<Coordinate>();
+        TreeSet<Coordinate> checkBirthSet = new TreeSet<Coordinate>();
         for (Coordinate c : set) {
-
-            Coordinate new_c = new Coordinate(c.x - 1, c.y - 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x - 1, c.y);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x - 1, c.y + 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x, c.y - 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x, c.y + 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x + 1, c.y - 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x + 1, c.y);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
-            }
-            new_c = new Coordinate(c.x + 1, c.y + 1);
-            if (!set.contains(new_c)) {
-                maybeNewSet.add(new_c);
+            List<Coordinate> neighbor = Arrays.asList(new Coordinate(c.x - 1, c.y - 1), new Coordinate(c.x - 1, c.y),
+                    new Coordinate(c.x - 1, c.y + 1), new Coordinate(c.x, c.y - 1), new Coordinate(c.x, c.y + 1),
+                    new Coordinate(c.x + 1, c.y - 1), new Coordinate(c.x + 1, c.y), new Coordinate(c.x + 1, c.y + 1));
+            for (Coordinate new_c : neighbor) {
+                if (!set.contains(new_c)) {
+                    checkBirthSet.add(new_c);
+                }
             }
         }
-        for (Coordinate c : maybeNewSet) {
+        for (Coordinate c : checkBirthSet) {
             int cnt = countAround(c);
             if (cnt == 3) {
                 newset.add(c);
