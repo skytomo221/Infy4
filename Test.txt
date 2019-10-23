@@ -1,0 +1,34 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+
+public class Test {
+    public static void main(String[] args) {
+        GameWindow gw = new GameWindow("Life Game", 400, 300);
+        gw.add(new DrawCanvas());// 描画領域の追加
+        gw.setVisible(true);
+        LifeGame l = new LifeGame();
+        System.out.println(l.toString());
+    }
+}
+
+// ウィンドウクラス
+class GameWindow extends JFrame {
+    private static final long serialVersionUID = 1L;
+
+    public GameWindow(String title, int width, int height) {
+        super(title);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(width, height);
+        setLocationRelativeTo(null);
+        setResizable(false);
+    }
+}
+
+// 描画する紙を表すクラス
+class DrawCanvas extends JPanel {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.fillRect(200, 100, 50, 50); // 矩形の塗りつぶし
+    }
+}
