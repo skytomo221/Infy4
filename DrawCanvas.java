@@ -78,16 +78,16 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         mouseStart = e.getPoint();
         // マウスカーソル
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("icon/grabbing2.png");
+        Image image = toolkit.getImage("icon/grabbing3.png");
         Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
         setCursor(c);
     }
 
     public void mouseReleased(MouseEvent e) {
-        padding.translate(-mouseStart.x + e.getPoint().x, -mouseStart.y + e.getPoint().y);
+        offsetPoint.translate(-mouseStart.x + e.getPoint().x, -mouseStart.y + e.getPoint().y);
         // マウスカーソル
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("icon/grab.png");
+        Image image = toolkit.getImage("icon/grab2.png");
         Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
         setCursor(c);
     }
