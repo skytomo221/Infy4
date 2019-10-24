@@ -58,11 +58,11 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     public void mouseClicked(MouseEvent e) {
         int btn = e.getButton();
         if (btn == MouseEvent.BUTTON1) {
-            cellSize++;
+            ;
         } else if (btn == MouseEvent.BUTTON2) {
             ;
         } else if (btn == MouseEvent.BUTTON3) {
-            setCellSize(cellSize - 1);
+            ;
         }
         repaint();
     }
