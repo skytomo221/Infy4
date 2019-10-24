@@ -93,7 +93,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mouseDragged(MouseEvent e) {
-        padding.translate(-mouseStart.x + e.getPoint().x, -mouseStart.y + e.getPoint().y);
+        offsetPoint.translate((-mouseStart.x + e.getPoint().x) / cellSize, (-mouseStart.y + e.getPoint().y) / cellSize);
         mouseStart.setLocation(e.getPoint());
         repaint();
     }
@@ -103,8 +103,12 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
 
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getWheelRotation() > 0) {
+            offsetPoint.setLocation((int) (((double) offsetPoint.x + e.getPoint().x / cellSize / (cellSize - 1))),
+                    (int) (((double) offsetPoint.y + e.getPoint().y / cellSize / (cellSize - 1))));
             setCellSize(cellSize - 1);
         } else if (e.getWheelRotation() < 0) {
+            offsetPoint.setLocation((int) (((double) offsetPoint.x - e.getPoint().x / cellSize / (cellSize + 1))),
+                    (int) (((double) offsetPoint.y - e.getPoint().y / cellSize / (cellSize + 1))));
             setCellSize(cellSize + 1);
         }
         repaint();
