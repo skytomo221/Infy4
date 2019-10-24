@@ -21,7 +21,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     public LifeGame lifeGame;
     protected int cellSize;
     protected Point mouseStart;
-    protected Point padding;
+    protected Point offsetPoint;
 
     /**
      * ライフゲームのセルの大きさを指定します。
@@ -43,15 +43,16 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
-        padding = new Point();
-        padding.setLocation(0, 0);
+        offsetPoint = new Point();
+        offsetPoint.setLocation(0, 0);
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.GREEN);
         for (Coordinate c : lifeGame.set) {
-            g.fillRect(c.x * cellSize + padding.x, c.y * cellSize + padding.y, cellSize, cellSize); // 矩形の塗りつぶし
+            g.fillRect(c.x * cellSize + offsetPoint.x * cellSize, c.y * cellSize + offsetPoint.y * cellSize, cellSize,
+                    cellSize); // 矩形の塗りつぶし
         }
     }
 
