@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -9,9 +11,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
-
-import java.awt.Image;
-import java.awt.Toolkit;
 
 /**
  * ライフゲームをただひたすらに描画します。
@@ -22,6 +21,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     protected int cellSize;
     protected Point mouseStart;
     protected Point offsetPoint;
+    EditMode editMode = EditMode.MOVE;
 
     /**
      * ライフゲームのセルの大きさを指定します。

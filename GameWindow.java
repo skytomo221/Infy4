@@ -1,29 +1,38 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-
-import java.awt.Graphics;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.LayoutManager;
-import javax.swing.border.BevelBorder;
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 // ウィンドウクラス
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame implements MenuListener {
     private static final long serialVersionUID = 1L;
 
     // ステータスバー
     public JPanel statusBar = new JPanel();
     public JMenuBar menuBar = new JMenuBar();
-    public Timer timer;
+    Timer timer = new Timer();
     JLabel generationLabel = new JLabel("Generation #1");
     JLabel lifeCountLabel = new JLabel("Count: ?");
+    JMenu menu3 = new JMenu("停止");
     JMenuItem menuitem7 = new JMenuItem("再生");
     JMenuItem menuitem8 = new JMenuItem("停止");
+    LifeGame lifeGame = new LifeGame();
+    DrawCanvas drawCanvas;
 
     public GameWindow(String title, int width, int height) {
         super(title);
@@ -44,7 +53,6 @@ public class GameWindow extends JFrame {
         menuBar.setBackground(new Color(30, 30, 30));
         JMenu menu1 = new JMenu("ファイル");
         JMenu menu2 = new JMenu("編集");
-        JMenu menu3 = new JMenu("再生");
         menuBar.add(menu1);
         menuBar.add(menu2);
         menuBar.add(menu3);
@@ -87,21 +95,57 @@ public class GameWindow extends JFrame {
         menuitem6.setBackground(new Color(30, 30, 30));
         menuitem7.setBackground(new Color(30, 30, 30));
         menuitem8.setBackground(new Color(30, 30, 30));
-
         menu1.add(menuitem1);
         menu1.add(menuitem2);
         menu1.add(menuitem3);
         menu2.add(menuitem4);
         menu2.add(menuitem5);
         menu2.add(menuitem6);
-        menu3.add(menuitem7);
-        menu3.add(menuitem8);
+        menu3.addMenuListener(this);
         add(menuBar, BorderLayout.NORTH);
         // ステータスバーのフォントの設定
         generationLabel.setForeground(new Color(200, 200, 200));
         generationLabel.setFont(new Font("Arial", Font.BOLD, 16));
         lifeCountLabel.setForeground(new Color(200, 200, 200));
         lifeCountLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        // ライフゲームの追加
+        drawCanvas = new DrawCanvas(lifeGame);
+        add(drawCanvas);
+        TimerTask task = new TimerTask() {
+            public void run() {
+                lifeGame.calc();
+                drawCanvas.repaint();
+                generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+                lifeCountLabel.setText("Count: " + lifeGame.set.size());
+            }
+        };
+        timer.schedule(task, 100, 1);
     }
 
+    public void menuCanceled(MenuEvent e) {
+    }
+
+    public void menuDeselected(MenuEvent e) {
+    }
+
+    public void menuSelected(MenuEvent e) {
+        if (timer == null) {
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    lifeGame.calc();
+                    drawCanvas.repaint();
+                    generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+                    lifeCountLabel.setText("Count: " + lifeGame.set.size());
+                }
+            };
+            timer = new Timer();
+            timer.schedule(task, 0, 1);
+            menu3.setText("停止");
+        } else {
+            timer.cancel();
+            timer = null;
+            menu3.setText("再生");
+        }
+        menu3.setSelected(false);
+    }
 }
