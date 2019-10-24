@@ -88,9 +88,9 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
 
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getWheelRotation() > 0) {
-            setCellSize(cellSize + 1);
-        } else if (e.getWheelRotation() < 0) {
             setCellSize(cellSize - 1);
+        } else if (e.getWheelRotation() < 0) {
+            setCellSize(cellSize + 1);
         }
     }
 }
