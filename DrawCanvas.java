@@ -76,34 +76,59 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mousePressed(MouseEvent e) {
-        mouseStart = e.getPoint();
-        // マウスカーソル
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("icon/grabbing3.png");
-        Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-        setCursor(c);
+        switch (editMode) {
+        case ERASE:
+            lifeGame.set.remove(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
+                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+            repaint();
+            break;
+        case WRITE:
+            lifeGame.set.add(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
+                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+            repaint();
+            break;
+        case MOVE:
+            mouseStart = e.getPoint();
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Image image = toolkit.getImage("icon/grabbing3.png");
+            Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+            setCursor(c);
+            break;
+        default:
+            break;
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
-        offsetPoint.translate(-mouseStart.x + e.getPoint().x, -mouseStart.y + e.getPoint().y);
-        // マウスカーソル
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("icon/grab2.png");
-        Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-        setCursor(c);
+        if (editMode == EditMode.MOVE && mouseStart != null) {
+            offsetPoint.translate(-mouseStart.x + e.getPoint().x, -mouseStart.y + e.getPoint().y);
+            // マウスカーソル
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Image image = toolkit.getImage("icon/grab2.png");
+            Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+            setCursor(c);
+        }
     }
 
     public void mouseDragged(MouseEvent e) {
-        offsetPoint.translate((-mouseStart.x + e.getPoint().x) / cellSize, (-mouseStart.y + e.getPoint().y) / cellSize);
-        mouseStart.setLocation(e.getPoint());
-        repaint();
+        if (editMode == EditMode.MOVE && mouseStart != null) {
+            offsetPoint.translate((-mouseStart.x + e.getPoint().x) / cellSize,
+                    (-mouseStart.y + e.getPoint().y) / cellSize);
+            mouseStart.setLocation(e.getPoint());
+            repaint();
+        }
+        if (editMode == EditMode.WRITE) {
+            lifeGame.set.add(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
+                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+            repaint();
+        }
     }
 
     public void mouseMoved(MouseEvent e) {
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (e.getWheelRotation() > 0) {
+        if (e.getWheelRotation() > 0 && cellSize > 1) {
             offsetPoint.setLocation((int) (((double) offsetPoint.x + e.getPoint().x / cellSize / (cellSize - 1))),
                     (int) (((double) offsetPoint.y + e.getPoint().y / cellSize / (cellSize - 1))));
             setCellSize(cellSize - 1);

@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.LayoutManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,7 +21,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 // ウィンドウクラス
-public class GameWindow extends JFrame implements MenuListener {
+public class GameWindow extends JFrame implements MenuListener, ActionListener {
     private static final long serialVersionUID = 1L;
 
     // ステータスバー
@@ -29,8 +31,9 @@ public class GameWindow extends JFrame implements MenuListener {
     JLabel generationLabel = new JLabel("Generation #1");
     JLabel lifeCountLabel = new JLabel("Count: ?");
     JMenu menu3 = new JMenu("停止");
-    JMenuItem menuitem7 = new JMenuItem("再生");
-    JMenuItem menuitem8 = new JMenuItem("停止");
+    JMenuItem menuitem4 = new JMenuItem("ペン");
+    JMenuItem menuitem5 = new JMenuItem("消しゴム");
+    JMenuItem menuitem6 = new JMenuItem("操作");
     LifeGame lifeGame = new LifeGame();
     DrawCanvas drawCanvas;
 
@@ -68,9 +71,7 @@ public class GameWindow extends JFrame implements MenuListener {
         JMenuItem menuitem1 = new JMenuItem("新規作成");
         JMenuItem menuitem2 = new JMenuItem("ファイルを開く");
         JMenuItem menuitem3 = new JMenuItem("保存");
-        JMenuItem menuitem4 = new JMenuItem("ペン");
-        JMenuItem menuitem5 = new JMenuItem("消しゴム");
-        JMenuItem menuitem6 = new JMenuItem("操作");
+
         menuitem1.setForeground(new Color(200, 200, 200));
         menuitem1.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem2.setForeground(new Color(200, 200, 200));
@@ -83,18 +84,13 @@ public class GameWindow extends JFrame implements MenuListener {
         menuitem5.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem6.setForeground(new Color(200, 200, 200));
         menuitem6.setFont(new Font("メイリオ", Font.BOLD, 16));
-        menuitem7.setForeground(new Color(200, 200, 200));
-        menuitem7.setFont(new Font("メイリオ", Font.BOLD, 16));
-        menuitem8.setForeground(new Color(200, 200, 200));
-        menuitem8.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem1.setBackground(new Color(30, 30, 30));
         menuitem2.setBackground(new Color(30, 30, 30));
         menuitem3.setBackground(new Color(30, 30, 30));
         menuitem4.setBackground(new Color(30, 30, 30));
         menuitem5.setBackground(new Color(30, 30, 30));
         menuitem6.setBackground(new Color(30, 30, 30));
-        menuitem7.setBackground(new Color(30, 30, 30));
-        menuitem8.setBackground(new Color(30, 30, 30));
+        menuitem4.addActionListener( this);
         menu1.add(menuitem1);
         menu1.add(menuitem2);
         menu1.add(menuitem3);
@@ -120,6 +116,26 @@ public class GameWindow extends JFrame implements MenuListener {
             }
         };
         timer.schedule(task, 100, 1);
+    }
+
+    public void actionPerformed(ActionListener e) {
+        if (e.getSource() == menuitem4) {
+            drawCanvas.editMode = EditMode.WRITE;
+        } else if (e.getSource() == menuitem5) {
+            drawCanvas.editMode = EditMode.ERASE;
+        } else if (e.getSource() == menuitem6) {
+            drawCanvas.editMode = EditMode.MOVE;
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == menuitem4) {
+            drawCanvas.editMode = EditMode.WRITE;
+        } else if (e.getSource() == menuitem5) {
+            drawCanvas.editMode = EditMode.ERASE;
+        } else if (e.getSource() == menuitem6) {
+            drawCanvas.editMode = EditMode.MOVE;
+        }
     }
 
     public void menuCanceled(MenuEvent e) {
