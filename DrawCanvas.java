@@ -7,11 +7,13 @@ import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * ライフゲームをただひたすらに描画します。
  */
-public class DrawCanvas extends JPanel implements MouseListener, MouseMotionListener {
+public class DrawCanvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
     public LifeGame lifeGame;
     protected int cellSize;
@@ -37,6 +39,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         setBackground(new Color(10, 10, 10));
         addMouseListener(this);
         addMouseMotionListener(this);
+        addMouseWheelListener(this);
         padding = new Point();
         padding.setLocation(0, 0);
     }
@@ -81,5 +84,13 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mouseMoved(MouseEvent e) {
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getWheelRotation() > 0) {
+            setCellSize(cellSize + 1);
+        } else if (e.getWheelRotation() < 0) {
+            setCellSize(cellSize - 1);
+        }
     }
 }
