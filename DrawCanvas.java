@@ -76,27 +76,34 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mousePressed(MouseEvent e) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
         switch (editMode) {
         case ERASE:
             lifeGame.set.remove(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
                     (int) (offsetPoint.getY() + e.getY()) / cellSize));
             repaint();
+            Image image1 = toolkit.getImage("icon/eraser.png");
+            Cursor c1 = toolkit.createCustomCursor(image1, new Point(0, 31), "img");
+            setCursor(c1);
             break;
         case WRITE:
             lifeGame.set.add(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
                     (int) (offsetPoint.getY() + e.getY()) / cellSize));
             repaint();
+            Image image2 = toolkit.getImage("icon/pen.png");
+            Cursor c2 = toolkit.createCustomCursor(image2, new Point(0, 31), "img");
+            setCursor(c2);
             break;
         case MOVE:
             mouseStart = e.getPoint();
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Image image = toolkit.getImage("icon/grabbing3.png");
-            Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-            setCursor(c);
+            Image image3 = toolkit.getImage("icon/grabbing3.png");
+            Cursor c3 = toolkit.createCustomCursor(image3, new Point(0, 0), "img");
+            setCursor(c3);
             break;
         default:
             break;
         }
+
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -123,7 +130,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         } else if (editMode == EditMode.WRITE) {
             lifeGame.set.add(convertToCoordinate(e.getPoint()));
             repaint();
-        }else if (editMode == EditMode.ERASE) {
+        } else if (editMode == EditMode.ERASE) {
             lifeGame.set.remove(convertToCoordinate(e.getPoint()));
             repaint();
         }
