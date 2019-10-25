@@ -42,7 +42,8 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     public JMenuBar menuBar = new JMenuBar();
     Timer timer = new Timer();
     JLabel generationLabel = new JLabel("Generation #1");
-    JLabel lifeCountLabel = new JLabel("Count: ?");
+    JLabel lifeCountLabel = new JLabel(", Count: ?");
+    JLabel mouseCoordinateLabel = new JLabel(", Mouse Coordinate: (0, 0)");
     JMenu menu3 = new JMenu("停止");
     JMenuItem menuitem1 = new JMenuItem("新規作成");
     JMenuItem menuitem2 = new JMenuItem("ファイルを開く");
@@ -66,6 +67,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         statusBar.setLayout((LayoutManager) new BoxLayout(statusBar, BoxLayout.X_AXIS));
         statusBar.add(generationLabel);
         statusBar.add(lifeCountLabel);
+        statusBar.add(mouseCoordinateLabel);
         statusBar.setBackground(new Color(30, 30, 30));
         add(statusBar, BorderLayout.SOUTH);
         // メニューバーの設定
@@ -122,9 +124,11 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         generationLabel.setFont(new Font("Arial", Font.BOLD, 16));
         lifeCountLabel.setForeground(new Color(200, 200, 200));
         lifeCountLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        mouseCoordinateLabel.setForeground(new Color(200, 200, 200));
+        mouseCoordinateLabel.setFont(new Font("Arial", Font.BOLD, 16));
         // ライフゲームの設定
         for (int i = 1; i < 500; i++) {
-            lifeGame.set.add(new Coordinate(50, 50 + i));
+            lifeGame.set.add(new Coordinate(0, i));
         }
         // ライフゲームの追加
         drawCanvas = new DrawCanvas(lifeGame);
@@ -136,7 +140,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
                 lifeGame.calc();
                 drawCanvas.repaint();
                 generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-                lifeCountLabel.setText("Count: " + lifeGame.set.size());
+                lifeCountLabel.setText(", Count: " + lifeGame.set.size());
             }
         };
         timer.schedule(task, 100, 1);
@@ -150,7 +154,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         if (e.getSource() == menuitem1) {
             drawCanvas.lifeGame = lifeGame = new LifeGame();
             generationLabel.setText("Generation #1");
-            lifeCountLabel.setText("Count: 0");
+            lifeCountLabel.setText(", Count: 0");
             drawCanvas.repaint();
             drawCanvas.offsetPoint = new Point(0, 0);
             drawCanvas.setCellSize(10);
@@ -165,7 +169,8 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
                         ObjectInputStream in = new ObjectInputStream(b)) {
                     drawCanvas.lifeGame = lifeGame = (LifeGame) in.readObject();
                     generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-                    lifeCountLabel.setText("Count: " + lifeGame.set.size());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
+                    drawCanvas.offsetOptimization();
                     drawCanvas.repaint();
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
@@ -209,7 +214,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
                     lifeGame.calc();
                     drawCanvas.repaint();
                     generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-                    lifeCountLabel.setText("Count: " + lifeGame.set.size());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
                 }
             };
             timer = new Timer();
@@ -228,7 +233,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
 
     public void mousePressed(MouseEvent e) {
         generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-        lifeCountLabel.setText("Count: " + lifeGame.set.size());
+        lifeCountLabel.setText(", Count: " + lifeGame.set.size());
         if (drawCanvas.getEditMode() == EditMode.WRITE || drawCanvas.getEditMode() == EditMode.ERASE) {
             if (timer != null) {
                 timer.cancel();
@@ -246,7 +251,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
                     lifeGame.calc();
                     drawCanvas.repaint();
                     generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-                    lifeCountLabel.setText("Count: " + lifeGame.set.size());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
                 }
             };
             timer = new Timer();
@@ -264,7 +269,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
 
     public void mouseDragged(MouseEvent e) {
         generationLabel.setText("Generation #" + lifeGame.GetGeneration());
-        lifeCountLabel.setText("Count: " + lifeGame.set.size());
+        lifeCountLabel.setText(", Count: " + lifeGame.set.size());
         if (drawCanvas.getEditMode() == EditMode.WRITE || drawCanvas.getEditMode() == EditMode.ERASE) {
             if (timer != null) {
                 timer.cancel();
@@ -276,6 +281,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     }
 
     public void mouseMoved(MouseEvent e) {
+        mouseCoordinateLabel.setText(", Mouse Coordinate: " + drawCanvas.convertToCoordinate(e.getPoint()).toString());
     }
 
 }
