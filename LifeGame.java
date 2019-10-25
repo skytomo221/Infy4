@@ -1,9 +1,10 @@
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.TreeSet;
 
-public class LifeGame {
+public class LifeGame implements Serializable {
     public TreeSet<Coordinate> set = new TreeSet<Coordinate>();;
     protected int generation = 1;
 

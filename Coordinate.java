@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Coordinate implements Comparable<Coordinate> {
+public class Coordinate implements Comparable<Coordinate>, Serializable {
     public int x;
     public int y;
 

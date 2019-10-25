@@ -8,7 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -144,6 +148,22 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
             generationLabel.setText("Generation #1");
             lifeCountLabel.setText("Count: 0");
             drawCanvas.repaint();
+        } else if (e.getSource() == menuitem2) {
+            ;
+        } else if (e.getSource() == menuitem3) {
+            // ライフゲームのファイルを保存
+            JFileChooser filechooser = new JFileChooser("");
+            int selected = filechooser.showSaveDialog(this);
+            if (selected == JFileChooser.APPROVE_OPTION) {
+                File file = filechooser.getSelectedFile();
+                try (FileOutputStream f = new FileOutputStream(file);
+                        BufferedOutputStream b = new BufferedOutputStream(f);
+                        ObjectOutputStream out = new ObjectOutputStream(b)) {
+                    out.writeObject(lifeGame);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
         } else if (e.getSource() == menuitem4) {
             drawCanvas.setEditMode(EditMode.WRITE);
         } else if (e.getSource() == menuitem5) {
