@@ -170,6 +170,8 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     }
 
     public void mousePressed(MouseEvent e) {
+        generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+        lifeCountLabel.setText("Count: " + lifeGame.set.size());
         if (drawCanvas.getEditMode() == EditMode.WRITE || drawCanvas.getEditMode() == EditMode.ERASE) {
             if (timer != null) {
                 timer.cancel();
@@ -204,6 +206,8 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     }
 
     public void mouseDragged(MouseEvent e) {
+        generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+        lifeCountLabel.setText("Count: " + lifeGame.set.size());
         if (drawCanvas.getEditMode() == EditMode.WRITE || drawCanvas.getEditMode() == EditMode.ERASE) {
             if (timer != null) {
                 timer.cancel();
