@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.TreeSet;
 
 public class LifeGame {
-    public TreeSet<Coordinate> set;
+    public TreeSet<Coordinate> set = new TreeSet<Coordinate>();;
     protected int generation = 1;
 
     public int GetGeneration() {
@@ -12,10 +12,6 @@ public class LifeGame {
     }
 
     public LifeGame() {
-        this.set = new TreeSet<Coordinate>();
-        for (int i = 1; i < 500; i++) {
-            set.add(new Coordinate(50, 50 + i));
-        }
     }
 
     private int countAround(Coordinate c) {
