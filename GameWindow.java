@@ -3,8 +3,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.LayoutManager;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,6 +19,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import javafx.scene.Cursor;
+import javafx.scene.effect.Light.Point;
+import javafx.scene.image.Image;
 
 // ウィンドウクラス
 public class GameWindow extends JFrame implements MenuListener, ActionListener {
@@ -121,22 +125,16 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener {
     }
 
     public void actionPerformed(ActionListener e) {
-        if (e.getSource() == menuitem4) {
-            drawCanvas.editMode = EditMode.WRITE;
-        } else if (e.getSource() == menuitem5) {
-            drawCanvas.editMode = EditMode.ERASE;
-        } else if (e.getSource() == menuitem6) {
-            drawCanvas.editMode = EditMode.MOVE;
-        }
+
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menuitem4) {
-            drawCanvas.editMode = EditMode.WRITE;
+            drawCanvas.setEditMode(EditMode.WRITE);
         } else if (e.getSource() == menuitem5) {
-            drawCanvas.editMode = EditMode.ERASE;
+            drawCanvas.setEditMode(EditMode.ERASE);
         } else if (e.getSource() == menuitem6) {
-            drawCanvas.editMode = EditMode.MOVE;
+            drawCanvas.setEditMode(EditMode.MOVE);
         }
     }
 

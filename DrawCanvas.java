@@ -21,7 +21,7 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     protected int cellSize;
     protected Point mouseStart;
     protected Point offsetPoint;
-    EditMode editMode = EditMode.MOVE;
+    protected EditMode editMode = EditMode.MOVE;
 
     /**
      * ライフゲームのセルの大きさを指定します。
@@ -69,10 +69,33 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mouseEntered(MouseEvent e) {
-        // setCursor(Cursor.getPredefinedCursor(Cursor.CUSTOM_CURSOR));
     }
 
     public void mouseExited(MouseEvent e) {
+    }
+
+    public void setEditMode(EditMode editMode) {
+        this.editMode = editMode;
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        switch (editMode) {
+        case ERASE:
+            Image image1 = toolkit.getImage("icon/eraser.png");
+            Cursor c1 = toolkit.createCustomCursor(image1, new Point(0, 31), "img");
+            setCursor(c1);
+            break;
+        case WRITE:
+            Image image2 = toolkit.getImage("icon/pen.png");
+            Cursor c2 = toolkit.createCustomCursor(image2, new Point(0, 31), "img");
+            setCursor(c2);
+            break;
+        case MOVE:
+            Image image3 = toolkit.getImage("icon/grab2.png");
+            Cursor c3 = toolkit.createCustomCursor(image3, new Point(0, 0), "img");
+            setCursor(c3);
+            break;
+        default:
+            break;
+        }
     }
 
     public void mousePressed(MouseEvent e) {
