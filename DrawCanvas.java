@@ -36,6 +36,34 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         return cellSize;
     }
 
+    public void setEditMode(EditMode editMode) {
+        this.editMode = editMode;
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        switch (editMode) {
+        case ERASE:
+            Image image1 = toolkit.getImage("icon/eraser.png");
+            Cursor c1 = toolkit.createCustomCursor(image1, new Point(0, 31), "img");
+            setCursor(c1);
+            break;
+        case WRITE:
+            Image image2 = toolkit.getImage("icon/pen.png");
+            Cursor c2 = toolkit.createCustomCursor(image2, new Point(0, 31), "img");
+            setCursor(c2);
+            break;
+        case MOVE:
+            Image image3 = toolkit.getImage("icon/grab2.png");
+            Cursor c3 = toolkit.createCustomCursor(image3, new Point(0, 0), "img");
+            setCursor(c3);
+            break;
+        default:
+            break;
+        }
+    }
+
+    public EditMode getEditMode() {
+        return editMode;
+    }
+
     public DrawCanvas(LifeGame lifeGame) {
         this.lifeGame = lifeGame;
         cellSize = 1;
@@ -74,30 +102,6 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
     public void mouseExited(MouseEvent e) {
     }
 
-    public void setEditMode(EditMode editMode) {
-        this.editMode = editMode;
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        switch (editMode) {
-        case ERASE:
-            Image image1 = toolkit.getImage("icon/eraser.png");
-            Cursor c1 = toolkit.createCustomCursor(image1, new Point(0, 31), "img");
-            setCursor(c1);
-            break;
-        case WRITE:
-            Image image2 = toolkit.getImage("icon/pen.png");
-            Cursor c2 = toolkit.createCustomCursor(image2, new Point(0, 31), "img");
-            setCursor(c2);
-            break;
-        case MOVE:
-            Image image3 = toolkit.getImage("icon/grab2.png");
-            Cursor c3 = toolkit.createCustomCursor(image3, new Point(0, 0), "img");
-            setCursor(c3);
-            break;
-        default:
-            break;
-        }
-    }
-
     public void mousePressed(MouseEvent e) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         switch (editMode) {
@@ -126,7 +130,6 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         default:
             break;
         }
-
     }
 
     public void mouseReleased(MouseEvent e) {
