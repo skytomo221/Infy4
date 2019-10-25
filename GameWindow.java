@@ -187,7 +187,7 @@ public class GameWindow extends JFrame implements ActionListener, MouseListener,
             lifeCountLabel.setText(", Count: 0");
             drawCanvas.repaint();
             drawCanvas.offsetPoint = new Point(0, 0);
-            drawCanvas.setCellSize(10);
+            drawCanvas.setCellSize(40);
         } else if (e.getSource() == menuitem2) {
             // ライフゲームのファイルを開く
             JFileChooser filechooser = new JFileChooser("data");

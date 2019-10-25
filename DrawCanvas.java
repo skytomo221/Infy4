@@ -116,16 +116,14 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         switch (editMode) {
         case ERASE:
-            lifeGame.set.remove(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
-                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+            lifeGame.set.remove(convertToCoordinate(e.getPoint()));
             repaint();
             Image image1 = toolkit.getImage("icon/eraser.png");
             Cursor c1 = toolkit.createCustomCursor(image1, new Point(0, 31), "img");
             setCursor(c1);
             break;
         case WRITE:
-            lifeGame.set.add(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
-                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+            lifeGame.set.add(convertToCoordinate(e.getPoint()));
             repaint();
             Image image2 = toolkit.getImage("icon/pen.png");
             Cursor c2 = toolkit.createCustomCursor(image2, new Point(0, 31), "img");
