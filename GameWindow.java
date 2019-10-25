@@ -8,10 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -34,6 +36,9 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     JLabel generationLabel = new JLabel("Generation #1");
     JLabel lifeCountLabel = new JLabel("Count: ?");
     JMenu menu3 = new JMenu("停止");
+    JMenuItem menuitem1 = new JMenuItem("新規作成");
+    JMenuItem menuitem2 = new JMenuItem("ファイルを開く");
+    JMenuItem menuitem3 = new JMenuItem("保存");
     JMenuItem menuitem4 = new JMenuItem("ペン");
     JMenuItem menuitem5 = new JMenuItem("消しゴム");
     JMenuItem menuitem6 = new JMenuItem("操作");
@@ -72,9 +77,6 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         menu1.setBackground(new Color(30, 30, 30));
         menu2.setBackground(new Color(30, 30, 30));
         menu3.setBackground(new Color(30, 30, 30));
-        JMenuItem menuitem1 = new JMenuItem("新規作成");
-        JMenuItem menuitem2 = new JMenuItem("ファイルを開く");
-        JMenuItem menuitem3 = new JMenuItem("保存");
         menuitem1.setForeground(new Color(200, 200, 200));
         menuitem1.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem2.setForeground(new Color(200, 200, 200));
@@ -93,6 +95,9 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         menuitem4.setBackground(new Color(30, 30, 30));
         menuitem5.setBackground(new Color(30, 30, 30));
         menuitem6.setBackground(new Color(30, 30, 30));
+        menuitem1.addActionListener(this);
+        menuitem2.addActionListener(this);
+        menuitem3.addActionListener(this);
         menuitem4.addActionListener(this);
         menuitem5.addActionListener(this);
         menuitem6.addActionListener(this);
@@ -109,6 +114,10 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         generationLabel.setFont(new Font("Arial", Font.BOLD, 16));
         lifeCountLabel.setForeground(new Color(200, 200, 200));
         lifeCountLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        // ライフゲームの設定
+        for (int i = 1; i < 500; i++) {
+            lifeGame.set.add(new Coordinate(50, 50 + i));
+        }
         // ライフゲームの追加
         drawCanvas = new DrawCanvas(lifeGame);
         drawCanvas.addMouseListener(this);
@@ -130,7 +139,12 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == menuitem4) {
+        if (e.getSource() == menuitem1) {
+            drawCanvas.lifeGame = lifeGame = new LifeGame();
+            generationLabel.setText("Generation #1");
+            lifeCountLabel.setText("Count: 0");
+            drawCanvas.repaint();
+        } else if (e.getSource() == menuitem4) {
             drawCanvas.setEditMode(EditMode.WRITE);
         } else if (e.getSource() == menuitem5) {
             drawCanvas.setEditMode(EditMode.ERASE);
