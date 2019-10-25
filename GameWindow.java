@@ -90,7 +90,9 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener {
         menuitem4.setBackground(new Color(30, 30, 30));
         menuitem5.setBackground(new Color(30, 30, 30));
         menuitem6.setBackground(new Color(30, 30, 30));
-        menuitem4.addActionListener( this);
+        menuitem4.addActionListener(this);
+        menuitem5.addActionListener(this);
+        menuitem6.addActionListener(this);
         menu1.add(menuitem1);
         menu1.add(menuitem2);
         menu1.add(menuitem3);

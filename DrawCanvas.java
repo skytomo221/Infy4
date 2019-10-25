@@ -110,16 +110,21 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         }
     }
 
+    public Coordinate convertToCoordinate(Point p) {
+        return new Coordinate(-offsetPoint.x + p.x / cellSize, -offsetPoint.y + p.y / cellSize);
+    }
+
     public void mouseDragged(MouseEvent e) {
         if (editMode == EditMode.MOVE && mouseStart != null) {
             offsetPoint.translate((-mouseStart.x + e.getPoint().x) / cellSize,
                     (-mouseStart.y + e.getPoint().y) / cellSize);
             mouseStart.setLocation(e.getPoint());
             repaint();
-        }
-        if (editMode == EditMode.WRITE) {
-            lifeGame.set.add(new Coordinate((int) (offsetPoint.getX() + e.getX()) / cellSize,
-                    (int) (offsetPoint.getY() + e.getY()) / cellSize));
+        } else if (editMode == EditMode.WRITE) {
+            lifeGame.set.add(convertToCoordinate(e.getPoint()));
+            repaint();
+        }else if (editMode == EditMode.ERASE) {
+            lifeGame.set.remove(convertToCoordinate(e.getPoint()));
             repaint();
         }
     }
