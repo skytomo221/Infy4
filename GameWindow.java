@@ -34,7 +34,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 // ウィンドウクラス
-public class GameWindow extends JFrame implements MenuListener, ActionListener, MouseListener, MouseMotionListener {
+public class GameWindow extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
 
     // ステータスバー
@@ -44,13 +44,17 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     JLabel generationLabel = new JLabel("Generation #1");
     JLabel lifeCountLabel = new JLabel(", Count: ?");
     JLabel mouseCoordinateLabel = new JLabel(", Mouse Coordinate: (0, 0)");
-    JMenu menu3 = new JMenu("停止");
     JMenuItem menuitem1 = new JMenuItem("新規作成");
     JMenuItem menuitem2 = new JMenuItem("ファイルを開く");
     JMenuItem menuitem3 = new JMenuItem("保存");
     JMenuItem menuitem4 = new JMenuItem("ペン");
     JMenuItem menuitem5 = new JMenuItem("消しゴム");
     JMenuItem menuitem6 = new JMenuItem("操作");
+    JMenuItem menuitem7 = new JMenuItem("神速 (1000 世代/秒)");
+    JMenuItem menuitem8 = new JMenuItem("速い (10 世代/秒)");
+    JMenuItem menuitem9 = new JMenuItem("普通 (2 世代/秒)");
+    JMenuItem menuitem10 = new JMenuItem("ゆっくり (1 世代/秒)");
+    JMenuItem menuitem11 = new JMenuItem("停止 (0 世代/秒)");
     LifeGame lifeGame = new LifeGame();
     DrawCanvas drawCanvas;
     Boolean pause = false;
@@ -75,6 +79,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         menuBar.setBackground(new Color(30, 30, 30));
         JMenu menu1 = new JMenu("ファイル");
         JMenu menu2 = new JMenu("編集");
+        JMenu menu3 = new JMenu("再生/停止");
         menuBar.add(menu1);
         menuBar.add(menu2);
         menuBar.add(menu3);
@@ -99,25 +104,49 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         menuitem5.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem6.setForeground(new Color(200, 200, 200));
         menuitem6.setFont(new Font("メイリオ", Font.BOLD, 16));
+        menuitem7.setForeground(new Color(200, 200, 200));
+        menuitem7.setFont(new Font("メイリオ", Font.BOLD, 16));
+        menuitem8.setForeground(new Color(200, 200, 200));
+        menuitem8.setFont(new Font("メイリオ", Font.BOLD, 16));
+        menuitem9.setForeground(new Color(200, 200, 200));
+        menuitem9.setFont(new Font("メイリオ", Font.BOLD, 16));
+        menuitem10.setForeground(new Color(200, 200, 200));
+        menuitem10.setFont(new Font("メイリオ", Font.BOLD, 16));
+        menuitem11.setForeground(new Color(200, 200, 200));
+        menuitem11.setFont(new Font("メイリオ", Font.BOLD, 16));
         menuitem1.setBackground(new Color(30, 30, 30));
         menuitem2.setBackground(new Color(30, 30, 30));
         menuitem3.setBackground(new Color(30, 30, 30));
         menuitem4.setBackground(new Color(30, 30, 30));
         menuitem5.setBackground(new Color(30, 30, 30));
         menuitem6.setBackground(new Color(30, 30, 30));
+        menuitem7.setBackground(new Color(30, 30, 30));
+        menuitem8.setBackground(new Color(30, 30, 30));
+        menuitem9.setBackground(new Color(30, 30, 30));
+        menuitem10.setBackground(new Color(30, 30, 30));
+        menuitem11.setBackground(new Color(30, 30, 30));
         menuitem1.addActionListener(this);
         menuitem2.addActionListener(this);
         menuitem3.addActionListener(this);
         menuitem4.addActionListener(this);
         menuitem5.addActionListener(this);
         menuitem6.addActionListener(this);
+        menuitem7.addActionListener(this);
+        menuitem8.addActionListener(this);
+        menuitem9.addActionListener(this);
+        menuitem10.addActionListener(this);
+        menuitem11.addActionListener(this);
         menu1.add(menuitem1);
         menu1.add(menuitem2);
         menu1.add(menuitem3);
         menu2.add(menuitem4);
         menu2.add(menuitem5);
         menu2.add(menuitem6);
-        menu3.addMenuListener(this);
+        menu3.add(menuitem7);
+        menu3.add(menuitem8);
+        menu3.add(menuitem9);
+        menu3.add(menuitem10);
+        menu3.add(menuitem11);
         add(menuBar, BorderLayout.NORTH);
         // ステータスバーのフォントの設定
         generationLabel.setForeground(new Color(200, 200, 200));
@@ -134,6 +163,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
         drawCanvas = new DrawCanvas(lifeGame);
         drawCanvas.addMouseListener(this);
         drawCanvas.addMouseMotionListener(this);
+        drawCanvas.offsetOptimization();
         add(drawCanvas);
         TimerTask task = new TimerTask() {
             public void run() {
@@ -198,17 +228,11 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
             drawCanvas.setEditMode(EditMode.ERASE);
         } else if (e.getSource() == menuitem6) {
             drawCanvas.setEditMode(EditMode.MOVE);
-        }
-    }
-
-    public void menuCanceled(MenuEvent e) {
-    }
-
-    public void menuDeselected(MenuEvent e) {
-    }
-
-    public void menuSelected(MenuEvent e) {
-        if (timer == null) {
+        } else if (e.getSource() == menuitem7) {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
             TimerTask task = new TimerTask() {
                 public void run() {
                     lifeGame.calc();
@@ -218,14 +242,58 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
                 }
             };
             timer = new Timer();
-            timer.schedule(task, 0, 1);
-            menu3.setText("停止");
-        } else {
-            timer.cancel();
-            timer = null;
-            menu3.setText("再生");
+            timer.schedule(task, 10, 1);
+        } else if (e.getSource() == menuitem8) {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    lifeGame.calc();
+                    drawCanvas.repaint();
+                    generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
+                }
+            };
+            timer = new Timer();
+            timer.schedule(task, 100, 100);
+        } else if (e.getSource() == menuitem9) {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    lifeGame.calc();
+                    drawCanvas.repaint();
+                    generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
+                }
+            };
+            timer = new Timer();
+            timer.schedule(task, 500, 500);
+        } else if (e.getSource() == menuitem10) {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    lifeGame.calc();
+                    drawCanvas.repaint();
+                    generationLabel.setText("Generation #" + lifeGame.GetGeneration());
+                    lifeCountLabel.setText(", Count: " + lifeGame.set.size());
+                }
+            };
+            timer = new Timer();
+            timer.schedule(task, 1000, 1000);
+        } else if (e.getSource() == menuitem11) {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
         }
-        menu3.setSelected(false);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -238,7 +306,6 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
             if (timer != null) {
                 timer.cancel();
                 timer = null;
-                menu3.setText("再生");
                 pause = true;
             }
         }
@@ -256,7 +323,6 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
             };
             timer = new Timer();
             timer.schedule(task, 0, 1);
-            menu3.setText("停止");
             pause = false;
         }
     }
@@ -274,7 +340,6 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
             if (timer != null) {
                 timer.cancel();
                 timer = null;
-                menu3.setText("再生");
                 pause = true;
             }
         }
