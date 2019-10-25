@@ -84,6 +84,16 @@ public class DrawCanvas extends JPanel implements MouseListener, MouseMotionList
         }
     }
 
+    public void offsetOptimization() {
+        Point avg = new Point(0, 0);
+        for (Coordinate c : lifeGame.set) {
+            avg.translate(c.x, c.y);
+        }
+        avg.x /= lifeGame.set.size();
+        avg.y /= lifeGame.set.size();
+        offsetPoint.setLocation(-avg.x + getSize().width / cellSize / 2.0, -avg.y + getSize().height / cellSize / 2.0);
+    }
+
     public void mouseClicked(MouseEvent e) {
         int btn = e.getButton();
         if (btn == MouseEvent.BUTTON1) {
