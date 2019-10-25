@@ -181,7 +181,7 @@ public class GameWindow extends JFrame implements MenuListener, ActionListener, 
     }
 
     public void mouseReleased(MouseEvent e) {
-        if (!pause) {
+        if (pause) {
             TimerTask task = new TimerTask() {
                 public void run() {
                     lifeGame.calc();
